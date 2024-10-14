@@ -11,8 +11,10 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.lifecycleScope
 import com.example.preferencedatastore1.databinding.ActivityMainBinding
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 // At the top level of your kotlin file:
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -31,6 +33,19 @@ class MainActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+
+        binding.btnSave.setOnClickListener{
+            binding.etSaveKey.text.toString()
+            binding.etSaveValue.text.toString()
+
+        }
+
+        binding.btnRead.setOnClickListener {
+            lifecycleScope.launch {
+                val value = read(binding.etReadkey.text.toString())
+                binding.tvReadValue.text = value ?: "No Value Found"
+            }
         }
     }
 
