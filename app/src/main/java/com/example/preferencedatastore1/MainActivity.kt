@@ -2,6 +2,7 @@ package com.example.preferencedatastore1
 
 import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -36,8 +37,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnSave.setOnClickListener{
-            binding.etSaveKey.text.toString()
-            binding.etSaveValue.text.toString()
+            lifecycleScope.launch {
+                try {
+                    save(
+                                binding.etSaveKey.text.toString(),
+                                binding.etSaveValue.text.toString()
+                    )
+                    Toast.makeText(this@MainActivity,"Preference saved successfully",Toast.LENGTH_SHORT).show()
+
+                } catch (e: Exception) {
+                    Toast.makeText(this@MainActivity,e.message,Toast.LENGTH_SHORT).show()
+                }
+
+            }
+
 
         }
 
